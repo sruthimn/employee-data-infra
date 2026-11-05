@@ -115,7 +115,32 @@ Resources:
       DefaultArguments:
         --BUCKET: !Ref DataBucket
         --job-language: python
-  
+  Database:
+    Type: AWS::Glue::Database
+    Properties:
+      CatalogId: !Ref AWS::AccountId
+      DatabaseInput:
+        Name: !Ref DatabaseName
+
+  Crawler:
+    Type: AWS::Glue::Crawler
+    Properties:
+      Name: !Sub ${Project}-crawler
+      Role: !GetAtt GlueRole.Arn
+      DatabaseName: !Ref Database
+      Targets:
+        S3Targets:
+          - Path: !Sub s3://${DataBucket}/curated/employees/
+
+  AthenaWorkGroup:
+    Type: AWS::Athena::WorkGroup
+    Properties:
+      Name: !Sub ${Project}-wg
+      RecursiveDeleteOption: true
+      WorkGroupConfiguration:
+        ResultConfiguration:
+          OutputLocation: !Sub s3://${DataBucket}/athena-results/
+          
   DailySchedule:
     Type: AWS::Events::Rule
     Properties:
