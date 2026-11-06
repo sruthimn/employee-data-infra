@@ -13,7 +13,7 @@ Parameters:
     Default: employee-api-sruthi-service
   DatabaseName:
     Type: String
-    Default: testdb
+    Default: db_employee_data_sruthi
   ScheduleState:
     Type: String
     Default: DISABLED
@@ -140,7 +140,7 @@ Resources:
       WorkGroupConfiguration:
         ResultConfiguration:
           OutputLocation: !Sub s3://${DataBucket}/athena-results/
-          
+
   DailySchedule:
     Type: AWS::Events::Rule
     Properties:
