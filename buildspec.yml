@@ -7,6 +7,3 @@ phases:
   build:
     commands:
       - cfn-lint template.yml
-artifacts:
-  files:
-    - template.yml
